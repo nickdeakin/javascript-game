@@ -2,6 +2,7 @@ const Main = () => {
   const arrowKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
   const typingKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     , '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', ' ', '!', '?'];
+  const boundaries = {top: 32, bottom: 992, left: 0, right: 1920};
   const redrawRate = 50;
   const moveRate = 16;
   const maxTop = 32;
@@ -10,6 +11,8 @@ const Main = () => {
   let positionX = 0;
   let movingX = 0;
   let movingY = 0;
+  let points = 0;
+  let faceOverride = null;
 
   const setup = () => {
     destroy();
@@ -41,6 +44,9 @@ const Main = () => {
   const move = () => {
       positionX = positionX + movingX;
       positionY = positionY + movingY;
+
+      positionX = positionX < boundaries.left ? boundaries.left : positionX + 100 > boundaries.right ? boundaries.right - 100 : positionX;
+      positionY = positionY < boundaries.top ? boundaries.top : positionY + 100 > boundaries.bottom ? boundaries.bottom - 100 : positionY;
       socket.emit('move', {x: positionX, y: positionY});
   };
 
@@ -87,9 +93,13 @@ const Main = () => {
     socket.emit('user message', command);
   };
 
-  const redraw = (boxes) => {
-    Object.entries(boxes).forEach(box => {
+  const redraw = (objects) => {
+    Object.entries(objects.positions).forEach(box => {
       drawBox(box[0], box[1].color, box[1].x, box[1].y, box[1].face);
+    });
+
+    Object.entries(objects.goodies).forEach(box => {
+      drawGoody(box[0], box[1].x, box[1].y);
     });
   };
 
@@ -127,6 +137,22 @@ const Main = () => {
     cb.appendChild(line);
   });
 
+  socket.on('score', function(msg) {
+    points += msg.points;
+    document.getElementById('points').innerHTML = points;
+    faceOverride = 'XD';
+    const t = setTimeout(() => {
+      faceOverride = null;
+      }, 500);
+  });
+
+  socket.on('remove goody', function(msg) {
+    let b = document.getElementById(msg.id);
+    if (b) {
+      mainEl().removeChild(b);
+    }
+  });
+
   const mainEl = () => {
     return document.getElementsByTagName('main')[0];
   };
@@ -154,11 +180,24 @@ const Main = () => {
     b.style.background = `${color}`;
     b.style.left = `${x}px`;
     b.style.top = `${y}px`;
-    b.innerText = face;
+    b.innerText = boxId === socket.id ? faceOverride ?? face : face;
     mainEl().appendChild(b);
   };
 
-  const t = setInterval(() => {
+  const drawGoody = (goodyId, x, y) => {
+    let b = document.getElementById(goodyId);
+    if (b) {
+      mainEl().removeChild(b);
+    }
+    b = document.createElement('div');
+    b.id = goodyId;
+    b.classList.add('goody')
+    b.style.left = `${x}px`;
+    b.style.top = `${y}px`;
+    mainEl().appendChild(b);
+  };
+
+  const interval = setInterval(() => {
     move();
   }, redrawRate);
 

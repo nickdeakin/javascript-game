@@ -63,3 +63,12 @@ footer input {
   justify-content: center;
   font-size: 64px;
 }
+
+.goody {
+  height: 24px;
+  width: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #909090;
+  position: absolute;
+}
