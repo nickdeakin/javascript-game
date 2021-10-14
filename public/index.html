@@ -1,0 +1,42 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>JavaScript Game</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body>
+
+<header>
+  <ul class="score">
+    <li>Score</li>
+    <li>0</li>
+    <li>of</li>
+    <li>738</li>
+  </ul>
+</header>
+<main>
+
+</main>
+<footer>
+  <input type="text" id="command" disabled="true" />
+</footer>
+
+<script type="module">
+  import Main from './assets/js/main.js';
+  Main();
+</script>
+
+<script src="https://cdn.socket.io/4.2.0/socket.io.min.js"
+        integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
+        crossorigin="anonymous"></script>
+<script>
+  const socket = io();
+</script>
+</body>
+
+</html>
