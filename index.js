@@ -100,9 +100,11 @@ const checkGoodyCollisions = socket => {
 }
 
 const goodyCollide = (socket, goody) => {
-    socket.emit('score', {points: 10});
+    socket.emit('score', {points: goody[1].value});
+
     delete goodies[goody[0]];
     io.emit('remove goody', {id: goody[0]});
+
     const latestGoody = generateGoody();
     goodies[latestGoody.id] = latestGoody.position;
 }
@@ -112,15 +114,22 @@ const randomNumber = (max) => {
 };
 
 const getColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
+    return colors[randomNumber(colors.length)];
 };
 
 const getFace = () => {
-    return faces[Math.floor(Math.random() * faces.length)];
+    return faces[randomNumber(faces.length)];
 };
 
 const generateGoody = () => {
-    return {id: uuidv4(), position: {x: randomNumber(boundaries.right - 24), y: randomNumber(boundaries.bottom -48) + 24}};
+    return {
+        id: uuidv4(),
+        position: {
+            x: randomNumber(boundaries.right - 40) + 20,
+            y: randomNumber(boundaries.bottom -60) + 40,
+            value: (randomNumber(5) + 1) * 10
+        }
+    };
 };
 
 const initialGoody = generateGoody();

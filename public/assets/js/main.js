@@ -98,8 +98,8 @@ const Main = () => {
       drawBox(box[0], box[1].color, box[1].x, box[1].y, box[1].face, box[1].name);
     });
 
-    Object.entries(objects.goodies).forEach(box => {
-      drawGoody(box[0], box[1].x, box[1].y);
+    Object.entries(objects.goodies).forEach(goody => {
+      drawGoody(goody[0], goody[1].x, goody[1].y, goody[1].value);
     });
   };
 
@@ -187,12 +187,13 @@ const Main = () => {
     b.innerHTML += `<span class="face">${boxId === socket.id ? faceOverride ?? face : face}</span>`;
   };
 
-  const drawGoody = (goodyId, x, y) => {
+  const drawGoody = (goodyId, x, y, value) => {
     let b = document.getElementById(goodyId);
     if (!b) {
       b = document.createElement('div');
       b.id = goodyId;
       b.classList.add('goody');
+      b.classList.add(`goody-value-${value}`);
       mainEl().appendChild(b);
     }
     b.style.left = `${x}px`;

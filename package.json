@@ -9,7 +9,8 @@
   "license": "",
   "author": "Nick Deakin <nickdeakin83@gmail.com>",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "debug": "node --inspect index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

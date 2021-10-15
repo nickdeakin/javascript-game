@@ -94,10 +94,25 @@ footer input {
 .goody {
   height: 24px;
   width: 24px;
-  background: white;
   border-radius: 8px;
   box-shadow: 0 0 5px #909090;
   position: absolute;
+}
+
+.goody-value-10 {
+  background: white;
+}
+.goody-value-20 {
+  background: silver;
+}
+.goody-value-30 {
+  background: gold;
+}
+.goody-value-40 {
+  background: blue;
+}
+.goody-value-50 {
+  background: purple;
 }
 
 .chat-box {
@@ -110,4 +125,51 @@ footer input {
   box-shadow: 0 0 10px #303030;
   border-radius: 4px;
   overflow: auto;
+}
+
+#help-link {
+  cursor: pointer;
+}
+
+#help-link:hover {
+  text-decoration: underline;
+}
+
+#overlay {
+  background: rgba(0,0,0, 0.3);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+}
+
+.none {
+  display: none;
+}
+
+.flex {
+  display: flex;
+}
+
+#help-container {
+  width: 640px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 0 12px 6px #acacac;
+  height: 380px;
+  overflow-y: auto;
+}
+
+#done-link {
+  display: block;
+  width: 80px;
+  margin: 0 auto;
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: center;
 }
