@@ -58,12 +58,16 @@ footer input {
   width: 96px;
   position: absolute;
   border-radius: 50px;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.face {
+  color: white;
   font-size: 64px;
-  border: 2px solid rgba(255,255,255, 0.3);
+  transform: rotate(90deg);
 }
 
 .name--container {

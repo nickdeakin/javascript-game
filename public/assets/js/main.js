@@ -184,7 +184,7 @@ const Main = () => {
     b.style.left = `${x}px`;
     b.style.top = `${y}px`;
     b.innerHTML = (name) ? `<span class="name--container"><span class="name">${name}</span></span>` : '';
-    b.innerHTML += boxId === socket.id ? faceOverride ?? face : face;
+    b.innerHTML += `<span class="face">${boxId === socket.id ? faceOverride ?? face : face}</span>`;
   };
 
   const drawGoody = (goodyId, x, y) => {
