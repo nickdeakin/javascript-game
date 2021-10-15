@@ -1,9 +1,9 @@
 const Main = () => {
   const arrowKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'];
   const typingKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-    , '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', ' ', '!', '?'];
+    , '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ',', '.', ' ', '!', '?', '/'];
   const boundaries = {top: 32, bottom: 992, left: 0, right: 1920};
-  const redrawRate = 50;
+  const redrawRate = 1000 / 30;
   const moveRate = 16;
   const maxTop = 32;
 
@@ -95,7 +95,7 @@ const Main = () => {
 
   const redraw = (objects) => {
     Object.entries(objects.positions).forEach(box => {
-      drawBox(box[0], box[1].color, box[1].x, box[1].y, box[1].face);
+      drawBox(box[0], box[1].color, box[1].x, box[1].y, box[1].face, box[1].name);
     });
 
     Object.entries(objects.goodies).forEach(box => {
@@ -137,6 +137,20 @@ const Main = () => {
     cb.appendChild(line);
   });
 
+  socket.on('pm received', function(msg) {
+    const cb = document.getElementById('chatMessages');
+    const line = document.createElement('div');
+    line.innerText = `(FROM) ${msg.user}: ${msg.message}`;
+    cb.appendChild(line);
+  });
+
+  socket.on('pm sent', function(msg) {
+    const cb = document.getElementById('chatMessages');
+    const line = document.createElement('div');
+    line.innerText = `(TO) ${msg.user}: ${msg.message}`;
+    cb.appendChild(line);
+  });
+
   socket.on('score', function(msg) {
     points += msg.points;
     document.getElementById('points').innerHTML = points;
@@ -169,32 +183,31 @@ const Main = () => {
     mainEl().appendChild(cb);
   };
 
-  const drawBox = (boxId, color, x, y, face) => {
+  const drawBox = (boxId, color, x, y, face, name) => {
     let b = document.getElementById(boxId);
-    if (b) {
-      mainEl().removeChild(b);
+    if (!b) {
+      b = document.createElement('div');
+      b.id = boxId;
+      b.classList.add('box')
+      b.style.background = `${color}`;
+      mainEl().appendChild(b);
     }
-    b = document.createElement('div');
-    b.id = boxId;
-    b.classList.add('box')
-    b.style.background = `${color}`;
     b.style.left = `${x}px`;
     b.style.top = `${y}px`;
-    b.innerText = boxId === socket.id ? faceOverride ?? face : face;
-    mainEl().appendChild(b);
+    b.innerHTML = (name) ? `<span class="name--container"><span class="name">${name}</span></span>` : '';
+    b.innerHTML += boxId === socket.id ? faceOverride ?? face : face;
   };
 
   const drawGoody = (goodyId, x, y) => {
     let b = document.getElementById(goodyId);
-    if (b) {
-      mainEl().removeChild(b);
+    if (!b) {
+      b = document.createElement('div');
+      b.id = goodyId;
+      b.classList.add('goody')
+      mainEl().appendChild(b);
     }
-    b = document.createElement('div');
-    b.id = goodyId;
-    b.classList.add('goody')
     b.style.left = `${x}px`;
     b.style.top = `${y}px`;
-    mainEl().appendChild(b);
   };
 
   const interval = setInterval(() => {

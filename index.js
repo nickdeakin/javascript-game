@@ -12,6 +12,7 @@ const API = '/api/v1';
 const colors = ['#03cffc', '#1f8023', '#cf6808', '#940000', '#000000', '#ad02a2'];
 const faces = [':D', ':)', ':(', ':O', ':/'];
 const boundaries = {top: 32, bottom: 992, left: 0, right: 1920};
+const redrawRate = 1000 / 30;
 
 app.use(cors());
 app.use(express.static('public'));
@@ -23,6 +24,7 @@ app.get(`${API}/status`, (req, res) => {
 
 let positions = {};
 let goodies = {};
+let names = {};
 
 io.on('connection', socket => {
     io.emit('user connected', { user: 'a user', message: 'connected' });
@@ -31,7 +33,8 @@ io.on('connection', socket => {
         x: randomNumber(600),
         y: randomNumber(600),
         color: getColor(),
-        face: getFace()
+        face: getFace(),
+        name: null
     };
 
     socket.emit('setup', positions[socket.id]);
@@ -45,18 +48,48 @@ io.on('connection', socket => {
     });
 
     socket.on('user message', (msg) => {
-        io.emit('user message', { user: 'a user', message: msg });
+        if (msg[0] === '/') {
+            execCommand(socket, msg);
+        } else {
+            const me = positions[socket.id].name ?? 'a user';
+            io.emit('user message', {user: me, message: msg});
+        }
     });
 
     socket.on('disconnect', () => {
+        const me = positions[socket.id].name ?? 'a user';
         delete positions[socket.id];
-        io.emit('user disconnected', { user: 'a user', message: 'disconnect', id: socket.id });
+        io.emit('user disconnected', { user: me, message: 'disconnect', id: socket.id });
     });
 });
 
+const execCommand = (socket, msg) => {
+    const parts = msg.split(' ');
+    const command = parts[0];
+    const instructionTypeOne = msg.replace(`${command} `, '')
+
+    const targetName = parts[1];
+    const instructionTypeTwo = msg.replace(`${command} ${targetName} `, '')
+
+    switch (command) {
+        case '/name':
+            positions[socket.id].name = instructionTypeOne;
+            names[instructionTypeOne.toLowerCase()] = {name: instructionTypeOne, id: socket.id};
+            break;
+        case '/pm':
+            const target = names[targetName.toLowerCase()];
+            if (target) {
+                const me = positions[socket.id].name ?? 'a user';
+                io.in(target.id).emit('pm received', { user: me, message: instructionTypeTwo});
+                socket.emit('pm sent', { user: targetName, message: instructionTypeTwo});
+            }
+            break;
+    }
+};
+
 const t = setInterval(() => {
     io.emit('redraw', {positions, goodies});
-}, 50);
+}, redrawRate);
 
 const checkGoodyCollisions = socket => {
     return Object.entries(goodies).filter(goody => {
@@ -87,7 +120,7 @@ const getFace = () => {
 };
 
 const generateGoody = () => {
-    return {id: uuidv4(), position: {x: randomNumber(boundaries.right - 24), y: randomNumber(boundaries.bottom - 24)}};
+    return {id: uuidv4(), position: {x: randomNumber(boundaries.right - 24), y: randomNumber(boundaries.bottom -48) + 24}};
 };
 
 const initialGoody = generateGoody();

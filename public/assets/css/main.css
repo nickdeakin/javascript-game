@@ -64,6 +64,27 @@ footer input {
   font-size: 64px;
 }
 
+.name--container {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.name {
+  position: relative;
+  top: 58px;
+  background: rgba(0,0,0,0.4);
+  font-size: 18px;
+  display: flex;
+  width: 100px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  left: -50px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
 .goody {
   height: 24px;
   width: 24px;
