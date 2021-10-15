@@ -31,7 +31,8 @@ header {
 }
 
 main {
-  background: yellow;
+  background: url("/assets/img/background.svg") no-repeat;
+  background-size: cover;
   flex-grow: 1;
   overflow: hidden;
 }

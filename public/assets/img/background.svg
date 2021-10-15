@@ -1,0 +1,17 @@
+<svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <rect stroke="#000" id="svg_1" height="363.99998" width="731.00003" y="-1.99998" x="-90.00003" fill="#007fff"/>
+  <ellipse stroke="#0f0f00" stroke-opacity="0" ry="159" rx="264.5" id="svg_3" cy="253" cx="85.5" fill="#00b208"/>
+  <ellipse ry="19" rx="34" id="svg_5" cy="48" cx="247" stroke-opacity="0" stroke="#0f0f00" fill="#f4f4f4"/>
+  <ellipse stroke="#0f0f00" ry="28" rx="46" id="svg_6" cy="46" cx="296" stroke-opacity="0" fill="#f4f4f4"/>
+  <ellipse ry="18" rx="34.5" id="svg_7" cy="63" cx="337.5" stroke-opacity="0" stroke="#0f0f00" fill="#f4f4f4"/>
+  <ellipse ry="18.5" rx="36.5" id="svg_8" cy="30.5" cx="63.5" stroke-opacity="0" stroke="#0f0f00" fill="#f4f4f4"/>
+  <ellipse stroke="#0f0f00" ry="26.5" rx="49" id="svg_9" cy="23.5" cx="120" stroke-opacity="0" fill="#f4f4f4"/>
+  <ellipse stroke="#0f0f00" ry="30" rx="70" id="svg_10" cy="141" cx="494" stroke-opacity="0" fill="#f4f4f4"/>
+  <ellipse stroke="#0f0f00" ry="22" rx="47.5" id="svg_11" cy="153" cx="562.5" stroke-opacity="0" fill="#f4f4f4"/>
+  <ellipse ry="20" rx="39.5" id="svg_12" cy="159" cx="423.5" stroke-opacity="0" stroke="#0f0f00" fill="#f4f4f4"/>
+  <ellipse transform="rotate(-4.55663 489.592 323.761)" stroke="#0f0f00" stroke-opacity="0" ry="160.71408" rx="295.95678" id="svg_2" cy="323.76118" cx="489.59197" fill="#00b208"/>
+ </g>
+</svg>

@@ -104,21 +104,15 @@ const Main = () => {
   };
 
   socket.on('user connected', function(msg) {
-    const cb = document.getElementById('chatMessages');
-    const line = document.createElement('div');
-    line.innerText = `${msg.user}: ${msg.message}`;
-    cb.appendChild(line);
+    addChatMessage(`${msg.user}: ${msg.message}`);
   });
 
   socket.on('user disconnected', function(msg) {
-    const cb = document.getElementById('chatMessages');
-    const line = document.createElement('div');
-    line.innerText = `${msg.user}: ${msg.message}`;
-    cb.appendChild(line);
     let b = document.getElementById(msg.id);
     if (b) {
       mainEl().removeChild(b);
     }
+    addChatMessage(`${msg.user}: ${msg.message}`);
   });
 
   socket.on('redraw', function(msg) {
@@ -131,24 +125,15 @@ const Main = () => {
   });
 
   socket.on('user message', function(msg) {
-    const cb = document.getElementById('chatMessages');
-    const line = document.createElement('div');
-    line.innerText = `${msg.user}: ${msg.message}`;
-    cb.appendChild(line);
+    addChatMessage(`${msg.user}: ${msg.message}`);
   });
 
   socket.on('pm received', function(msg) {
-    const cb = document.getElementById('chatMessages');
-    const line = document.createElement('div');
-    line.innerText = `(FROM) ${msg.user}: ${msg.message}`;
-    cb.appendChild(line);
+    addChatMessage(`(FROM) ${msg.user}: ${msg.message}`);
   });
 
   socket.on('pm sent', function(msg) {
-    const cb = document.getElementById('chatMessages');
-    const line = document.createElement('div');
-    line.innerText = `(TO) ${msg.user}: ${msg.message}`;
-    cb.appendChild(line);
+    addChatMessage(`(TO) ${msg.user}: ${msg.message}`);
   });
 
   socket.on('score', function(msg) {
@@ -166,6 +151,13 @@ const Main = () => {
       mainEl().removeChild(b);
     }
   });
+
+  const addChatMessage = msg => {
+    const cb = document.getElementById('chatMessages');
+    const line = document.createElement('div');
+    line.innerText = msg;
+    cb.appendChild(line);
+  };
 
   const mainEl = () => {
     return document.getElementsByTagName('main')[0];
