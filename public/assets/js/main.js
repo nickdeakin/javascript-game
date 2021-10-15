@@ -17,7 +17,7 @@ const Main = () => {
   const setup = () => {
     destroy();
     document.addEventListener('keydown', handleKeyPress);
-    chatMessages();
+    drawChatBox();
   };
   const destroy = () => {
     document.removeEventListener('keydown', handleKeyPress);
@@ -74,14 +74,14 @@ const Main = () => {
     i.value += key;
   };
 
-  const handleBackspacePress = key => {
+  const handleBackspacePress = _ => {
     const i = document.getElementById('command');
     if (i.value.length > 0) {
       i.value = i.value.slice(0, -1);
     }
   };
 
-  const handleEnterPress = key => {
+  const handleEnterPress = _ => {
     const i = document.getElementById('command');
     if (i.value.length > 0) {
       executeCommand(i.value);
@@ -140,7 +140,7 @@ const Main = () => {
     points += msg.points;
     document.getElementById('points').innerHTML = points;
     faceOverride = 'XD';
-    const t = setTimeout(() => {
+    setTimeout(() => {
       faceOverride = null;
       }, 500);
   });
@@ -152,26 +152,23 @@ const Main = () => {
     }
   });
 
-  const addChatMessage = msg => {
-    const cb = document.getElementById('chatMessages');
-    const line = document.createElement('div');
-    line.innerText = msg;
-    cb.appendChild(line);
-  };
-
   const mainEl = () => {
     return document.getElementsByTagName('main')[0];
   };
 
-  const chatMessages = () => {
+  const addChatMessage = msg => {
+    const cb = document.getElementById('chat-box');
+    const line = document.createElement('div');
+    line.innerText = msg;
+    cb.appendChild(line);
+    line.scrollIntoView();
+  };
+
+  const drawChatBox = () => {
     const cb = document.createElement('div');
-    cb.id = 'chatMessages';
-    cb.style.height = '200px'
-    cb.style.width = '400px'
-    cb.style.background = 'rgba(0,0,0,0.2)';
-    cb.style.position = 'absolute';
-    cb.style.right = `0`;
-    cb.style.top = `${maxTop}px`;
+    cb.id = 'chat-box';
+    cb.classList.add('chat-box');
+    cb.style.top = `${maxTop + 8}px`;
     mainEl().appendChild(cb);
   };
 
@@ -180,7 +177,7 @@ const Main = () => {
     if (!b) {
       b = document.createElement('div');
       b.id = boxId;
-      b.classList.add('box')
+      b.classList.add('box');
       b.style.background = `${color}`;
       mainEl().appendChild(b);
     }
@@ -195,14 +192,14 @@ const Main = () => {
     if (!b) {
       b = document.createElement('div');
       b.id = goodyId;
-      b.classList.add('goody')
+      b.classList.add('goody');
       mainEl().appendChild(b);
     }
     b.style.left = `${x}px`;
     b.style.top = `${y}px`;
   };
 
-  const interval = setInterval(() => {
+  setInterval(() => {
     move();
   }, redrawRate);
 
